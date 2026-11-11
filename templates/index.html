@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Smart Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <main class="container">
+
+        <!-- HEADER -->
+        <header class="hero">
+
+            <div class="hero-badge">✨ AI Powered</div>
+
+            <div class="hero-title">
+                <span class="hero-icon">🧠</span>
+                <h1>AI Smart Study Assistant</h1>
+            </div>
+
+            <h2>Study smarter. <span>Learn faster.</span></h2>
+
+            <p>
+                Your personal AI study partner for summaries,
+                exam answers, quizzes, explanations and more.
+            </p>
+
+        </header>
+
+        <!-- WELCOME -->
+        <section class="welcome-card">
+
+            <div class="welcome-icon">👋</div>
+
+            <div>
+                <h3>Welcome, Student!</h3>
+                <p>
+                    Upload your notes, ask a question, or create a quiz
+                    and let AI help you learn better.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- MAIN FEATURES -->
+        <section class="features-grid">
+
+            <!-- SUMMARIZE -->
+            <article class="feature-card">
+
+                <div class="feature-icon purple">📄</div>
+
+                <h3>Summarize Notes</h3>
+
+                <p class="card-description">
+                    Upload your study notes and get a simple,
+                    easy-to-revise summary.
+                </p>
+
+                <div class="upload-area">
+
+                    <label for="noteFile" class="upload-label">
+                        <span>☁️</span>
+                        <strong>Choose Notes</strong>
+                    </label>
+
+                    <input
+                        type="file"
+                        id="noteFile"
+                        accept=".txt,.pdf,.docx"
+                    >
+
+                    <div class="file-information">
+                        <span id="fileName">No file selected</span>
+                        <small>Supports TXT, PDF, DOCX</small>
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="summarizeNotes()"
+                >
+                    ✨ Summarize
+                </button>
+
+                <!-- READ SUMMARY + STOP SIDE BY SIDE -->
+                <div class="audio-row">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="speakSummary()"
+                    >
+                        🔊 Read Summary
+                    </button>
+
+                    <button
+                        type="button"
+                        class="secondary-button stop-button"
+                        onclick="stopSpeaking()"
+                    >
+                        ⏹️ Stop
+                    </button>
+
+                </div>
+
+                <div id="summary" class="result-box">
+                    <div class="empty-state">
+                        <span>📄</span>
+                        <p>Your summary will appear here...</p>
+                    </div>
+                </div>
+
+            </article>
+
+            <!-- ASK A QUESTION -->
+            <article class="feature-card">
+
+                <div class="feature-icon blue">🤖</div>
+
+                <h3>Ask a Question</h3>
+
+                <p class="card-description">
+                    Ask anything about your subject and get a clear
+                    explanation.
+                </p>
+
+                <select id="answerType" aria-label="Answer type">
+                    <option>Exam Preparation</option>
+                    <option>Quick Explanation</option>
+                    <option>Detailed Explanation</option>
+                </select>
+
+                <div class="question-input-wrap">
+
+                    <textarea
+                        id="question"
+                        placeholder="Type your question here..."
+                        aria-label="Your question"
+                    ></textarea>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="askButton"
+                    class="primary-button"
+                    onclick="askQuestion()"
+                >
+                    ✨ Ask AI
+                </button>
+
+                <!-- LISTEN + STOP SIDE BY SIDE -->
+                <div class="audio-row">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="speakAnswer()"
+                    >
+                        🔊 Listen
+                    </button>
+
+                    <button
+                        type="button"
+                        class="secondary-button stop-button"
+                        onclick="stopSpeaking()"
+                    >
+                        ⏹️ Stop
+                    </button>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="download-button"
+                    onclick="downloadAnswer()"
+                >
+                    📥 Download Answer
+                </button>
+
+                <div id="answer" class="result-box answer-result">
+                    <div class="empty-state">
+                        <span>✨</span>
+                        <p>Your AI answer will appear here...</p>
+                    </div>
+                </div>
+
+            </article>
+
+            <!-- QUIZ -->
+            <article class="feature-card quiz-card">
+
+                <div class="feature-icon green">🎯</div>
+
+                <h3>Generate a Quiz</h3>
+
+                <p class="card-description">
+                    Test your knowledge with an AI-generated
+                    multiple-choice quiz.
+                </p>
+
+                <input
+                    type="text"
+                    id="quizTopic"
+                    placeholder="e.g. Python, DBMS, Networking..."
+                    aria-label="Quiz topic"
+                >
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="generateQuiz()"
+                >
+                    📝 Generate Quiz
+                </button>
+
+                <!-- READ ALOUD + STOP SIDE BY SIDE -->
+                <div class="audio-row">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="speakQuiz()"
+                    >
+                        🔊 Read Aloud
+                    </button>
+
+                    <button
+                        type="button"
+                        class="secondary-button stop-button"
+                        onclick="stopSpeaking()"
+                    >
+                        ⏹️ Stop
+                    </button>
+
+                </div>
+
+                <div id="quiz" class="result-box quiz-result">
+                    <div class="empty-state">
+                        <span>📝</span>
+                        <p>Your quiz will appear here...</p>
+                    </div>
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="how-section">
+
+            <div class="section-heading">
+
+                <div class="how-heading-title">
+                    <span>⚙️</span>
+                    <h2>How it works</h2>
+                </div>
+
+                <p>Three simple steps to study smarter.</p>
+
+            </div>
+
+            <div class="steps-grid">
+
+                <article class="step-card step-purple">
+
+                    <div class="step-number">01</div>
+
+                    <div class="step-icon">📄</div>
+
+                    <div class="step-content">
+                        <h3>Choose</h3>
+                        <p>Upload your notes or choose a topic.</p>
+                    </div>
+
+                </article>
+
+                <div class="step-arrow">›</div>
+
+                <article class="step-card step-blue">
+
+                    <div class="step-number">02</div>
+
+                    <div class="step-icon">🤖</div>
+
+                    <div class="step-content">
+                        <h3>Ask AI</h3>
+                        <p>Get explanations and study material.</p>
+                    </div>
+
+                </article>
+
+                <div class="step-arrow">›</div>
+
+                <article class="step-card step-green">
+
+                    <div class="step-number">03</div>
+
+                    <div class="step-icon">🎯</div>
+
+                    <div class="step-content">
+                        <h3>Learn</h3>
+                        <p>Review answers and test yourself.</p>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+
+            <div class="footer-logo">
+                🧠 AI Smart Study Assistant
+            </div>
+
+            <p>Learn smarter. Prepare better. Achieve more.</p>
+
+        </footer>
+
+    </main>
+
+    <!-- YOUR EXISTING JAVASCRIPT -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- FILE NAME, DOWNLOAD AND AUDIO FEATURES -->
+    <script>
+        const noteFile = document.getElementById("noteFile");
+        const fileName = document.getElementById("fileName");
+
+        if (noteFile) {
+            noteFile.addEventListener("change", function () {
+                fileName.textContent = this.files.length
+                    ? this.files[0].name
+                    : "No file selected";
+            });
+        }
+
+        // Download the generated answer.
+        // This keeps the same function name as your existing page.
+        function downloadAnswer() {
+            const answer = document.getElementById("answer");
+
+            if (!answer || !answer.innerText.trim()) {
+                alert("Please ask a question first.");
+                return;
+            }
+
+            const blob = new Blob(
+                [answer.innerText],
+                { type: "text/plain;charset=utf-8" }
+            );
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = "AI_Study_Answer.txt";
+            link.click();
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        // READ THE GENERATED SUMMARY
+        function speakSummary() {
+            const summary = document.getElementById("summary");
+
+            if (!summary || !summary.querySelector(".key-points-card")) {
+                alert("Please summarize your notes first.");
+                return;
+            }
+
+            if (!("speechSynthesis" in window)) {
+                alert("Text-to-speech is not supported in this browser.");
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(
+                summary.innerText.trim()
+            );
+
+            utterance.lang = "en-IN";
+            utterance.rate = 0.9;
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // READ THE GENERATED AI ANSWER
+        function speakAnswer() {
+            const answer = document.getElementById("answer");
+
+            if (!answer || !answer.innerText.trim()) {
+                alert("Please generate an AI answer first.");
+                return;
+            }
+
+            if (!("speechSynthesis" in window)) {
+                alert("Text-to-speech is not supported in this browser.");
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            const text = answer.innerText.trim();
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            utterance.lang = "en-IN";
+            utterance.rate = 0.9;
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // READ QUIZ QUESTIONS AND OPTIONS
+        function speakQuiz() {
+            const quiz = document.getElementById("quiz");
+
+            if (!quiz || !quiz.innerText.trim()) {
+                alert("Please generate a quiz first.");
+                return;
+            }
+
+            if (!("speechSynthesis" in window)) {
+                alert("Text-to-speech is not supported in this browser.");
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(
+                quiz.innerText.trim()
+            );
+
+            utterance.lang = "en-IN";
+            utterance.rate = 0.85;
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // STOP READING ALOUD
+        function stopSpeaking() {
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        // Stop currently playing speech when the page is closed.
+        window.addEventListener("beforeunload", function () {
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+            }
+        });
+    </script>
+
+</body>
+</html>
